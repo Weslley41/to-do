@@ -1,0 +1,41 @@
+{% load bootstrap5 %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>To-do</title>
+	{% bootstrap_css %}
+</head>
+<body>
+	<nav class="navbar navbar-dark bg-dark mb-4 sticky-top">
+		<ul class="nav nav-tabs">
+			<li class="nav-item">
+				<a class="nav-link text-light" href="/">Início</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link text-light" href="/nova_tarefa">Nova tarefa</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link active" href="/contato">Contato</a>
+			</li>
+		</ul>
+	</nav>
+
+	<main class="container">
+		{% bootstrap_messages %}
+		<form action="{% url 'contato' %}" method="POST" class="form" enctype="multipart/form-data">
+			{% csrf_token %}
+			{% bootstrap_form form %}
+
+			<div class="d-flex justify-content-center mb-3">
+				<button type="reset" class="btn btn-danger mx-2">Limpar</button>
+				<button type="submit" class="btn btn-primary mx-2">Enviar</button>
+			</div>
+	</form>
+	</main>
+
+	{% bootstrap_javascript %}
+</body>
+</html>

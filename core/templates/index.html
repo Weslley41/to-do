@@ -1,0 +1,95 @@
+{% load bootstrap5 %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>To-do</title>
+	{% bootstrap_css %}
+</head>
+<body>
+	<nav class="navbar navbar-dark bg-dark mb-4 sticky-top">
+		<ul class="nav nav-tabs">
+			<li class="nav-item">
+				<a class="nav-link active" href="/">Início</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link text-light" href="/nova_tarefa">Nova tarefa</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link text-light" href="/contato">Contato</a>
+			</li>
+		</ul>
+	</nav>
+
+	<main class="container">
+		<table class="table table-striped table-hover">
+			<thead>
+				<tr class="user-select-none">
+					<th id="label-nome" onclick="ordenarTarefas('nome')">Tarefa</th>
+					<th id="label-criacao" onclick="ordenarTarefas('criacao')">Criado em</th>
+					<th id="label-previsao" onclick="ordenarTarefas('previsao')">Data prevista/conclusão</th>
+					<th id="label-concluida" onclick="ordenarTarefas('concluida')">Concluída</th>
+					<th id="label-prioridade" onclick="ordenarTarefas('prioridade')">Prioridade</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for tarefa in tarefas %}
+					<tr title="{{ tarefa.descricao }}">
+						<td><button onclick="atualizarModal({{ tarefa.id }})" class="btn btn-link text-decoration-none text-black" data-bs-toggle="modal" data-bs-target="#task-details">{{ tarefa.titulo }}</button></td>
+						<td>{{ tarefa.data_criacao }}</td>
+						<td>
+							{% if tarefa.concluida %}
+								{{ tarefa.data_conclusao }}
+							{% else %}
+								{{ tarefa.data_prevista }}
+							{% endif %}
+						</td>
+						<td>
+							{% if tarefa.concluida %}
+								<span class="badge bg-success">Sim</span>
+							{% else %}
+								<span class="badge bg-danger">Não</span>
+							{% endif %}
+						</td>
+						<td>
+							{% if tarefa.prioridade == 0 %}
+								<span class="badge bg-secondary">Indefinida</span>
+							{% elif tarefa.prioridade == 1 %}
+								<span class="badge bg-primary">Baixa</span>	
+							{% elif tarefa.prioridade == 2 %}
+								<span class="badge bg-warning text-dark">Média</span>
+							{% elif tarefa.prioridade == 3 %}
+								<span class="badge bg-danger">Alta</span>
+							{% endif %}
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</main>
+
+	<!-- Modal - Detalhes da tarefa -->
+	<div class="modal fade" id="task-details" tabindex="-1">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modal-title">Título da tarefa</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body" id="modal-body"></div>
+				<div class="modal-footer" id="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+					<button type="button" class="btn btn-primary" id="btn-salvar">Salvar alterações</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{% bootstrap_javascript %}
+	<script src="{% static 'js/tarefaModal.js' %}"></script>
+	<script src="{% static 'js/ordenarTarefas.js' %}"></script>
+</body>
+</html>
